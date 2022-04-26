@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link  href="Styles/Main.css" rel="stylesheet" type="text/css" media="all">
+    <title>Теоретические сведения</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script src="KnowledgeBase.js"></script>
+    <style>
+
+        A:Hover{ background-color: white; text-decoration: underline; color:  #111d43; }
+        A:Active { color: red; text-decoration: underline; }
+
+        #content {
+            height: 85%;
+            background-color: #f5f5f5;
+            justify-content: center;
+            align-items: center;
+            overflow: scroll;
+            overflow-x: hidden;
+            z-index: 99999;
+        }
+
+        #content .Title {
+            padding: 10px;
+            text-align: center;
+            font-size: 4vh;
+            color: #12214a;
+            font-weight: bold;
+        }
+
+        #content .text {
+            padding-left: 20px;
+            padding-right: 10px;
+            font-size: 3vh;
+            color: black;
+            text-align: stretch;
+        }
+        #OpenButton{
+            border:1px solid #111d43;
+            border-radius: 3px;
+            color:  white;
+            background-color: #111d43;
+            font-size: 20px;
+            position: fixed;
+            right: 30px;
+            bottom: 70px;
+            z-index: 9999999;
+            padding: 10px;
+        }
+
+        #Helper{
+            visibility: hidden;
+            position: fixed;
+            right: 20px;
+            bottom: 10vh;
+            width: 20vw;
+            height: 54vh;
+            z-index: 999999;
+        }
+
+        #HelperHeader{
+            color:white;
+            background-color: #111d43;
+            height: 7vh;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #CloseButton{
+            position: absolute;
+            right: 0;
+            height:5vh;
+            color:white;
+        }
+        #HelperBody{
+            background-color: white;
+            height: 45vh;
+            border: 1px solid #111d43;
+            color: black;
+        }
+
+        #HelperBottom{
+            background-color: #111d43;
+            height: 7vh;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #Chat{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #Chat input{
+            font-size: 2vh;
+            border:2px solid deepskyblue;
+            border-radius: 5px;
+            border: none;
+            margin: 2px;
+            height: 5vh;
+            width: 14vw;
+        }
+        #Chat img{
+            position: absolute;
+            right: 6vw;
+            height: 3vh;
+        }
+        #EnterButton{
+            border:2px solid deepskyblue;
+            color:white;
+            border-radius: 5px;
+            background-color: transparent;
+            font-size: 2vh;
+            height: 5vh;
+            width: 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 3px;
+        }
+
+        #HelperBody{
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            overflow: scroll;
+        }
+        .question{
+            margin: 3px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+        }
+        .answer{
+            margin: 3px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .question div{
+            padding: 5px;
+            width:82%;
+            border-radius: 5px;
+            background-color: lightblue;
+
+        }
+        .answer div{
+            padding: 5px;
+            width:82%;
+            border-radius: 5px;
+
+            background-color: deepskyblue;
+
+        }
+        .answer div img{
+            width: 100%;
+        }
+        .answer div embed{
+            width: 100%;
+        }
+        .answer audio{
+            width: 100%;
+            height: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="opacity2">
+    <div id="content">
+        <div id="OpenButton" onclick="Open()">Задать вопрос</div>
+        <div id="Helper">
+            <div id="HelperHeader">
+                <div>Задать вопрос</div>
+                <img onclick="Close()" id="CloseButton" src="Images/close.png">
+            </div>
+            <div id="HelperBody">
+            </div>
+            <div id="HelperBottom">
+                <div id="Chat">
+                    <input id="input_string" type="text" name="TextInput" placeholder="Введите вопрос">
+                    <img src="Images/mic.png" id="MicIcon" onclick="speech()">
+                </div>
+                <div id="EnterButton">
+                    <div onclick="findIntelAnswer()">Найти</div>
+                </div>
+            </div>
+        </div>
+    </div>
+<header class="container-fluid head_menu p-3" style="background:#111d43 ">
+    <div class="container ">
+        <div class="d-flex flex-wrap justify-content-center">
+            <ul class="nav col-12 me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="menu.html" class="nav-link menu_text" style="border: 2px solid blue">Теоретические сведения</a></li>
+                <li><a href="ustanovka_structure.html" class="nav-link menu_text " style="border: 2px solid #111d43">Структура установки</a></li>
+                <li><a href="index.html" class="nav-link menu_text" style="border: 2px solid #111d43">Симулятор установки</a></li>
+                <li><a href="tit.html" class="nav-link menu_text" style="border: 2px solid #111d43">Титульная страница</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+    <div class="container TheoryText" style="margin-bottom: 10px" >
+        <p  style="font-family: Arial; font-size: 24pt; color: rgb(75, 73, 72); font-weight: bold">Теоретические сведения</p>
+        <p> <span class="ChangedColor">Термодинамическая система </span> – это совокупность макроскопических тел, которые взаимодействуют и обмениваются энергией
+            как между собой, так и с другими телами. Состояние термодинамической системы задается <span class="ChangedColor"> термодинамическими параметрами </span> –
+        совокупностью физических величин, характеризующих свойства
+        термодинамической системы. Любое изменение в термодинамической системе, связанное с изменением хотя бы одного из термодинамических параметров, называется термодинамическим процессом. Макроскопическая система находится в термодинамическом
+        равновесии, если ее состояние с течением времени не меняется.</p>
+        <p> <span class="ChangedColor"> Квазистатическим, или равновесным, процессом</span> в термодинамике называют бесконечно медленный переход термодинамической системы из одного равновесного состояния в другое, при котором в любой момент времени физическое состояние системы
+            бесконечно мало отличается от равновесного. Равновесие в системе при квазистатическом процессе устанавливается во много раз
+            быстрее, чем происходит изменение физических параметров системы. Всякий квазистатический процесс является <span class="ChangedColor">обратимым процессом</span>. Термин «квазистатический процесс» был предложен в
+            1909 г. немецким математиком <span class="TextToPic"  id="t1" onmousedown="toim('Images/Caratheodory_constantin.jpg')" onmouseout="totext('К. Каратеодори')"><span>К. Каратеодори.</span></span> </p>
+        <p>
+            Согласно <span class="ChangedColor">первому началу термодинамики</span>: теплота, сообщаемая термодинамической системе, расходуется на изменение ее
+            внутренней энергии и на совершение системой работы против
+            внешних сил. В дифференциальной форме первое начало термодинамики имеет вид
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL1.JPG" class="img-thumbnail" />
+        </p>
+        </div>
+        <p>
+            Анализ различных термодинамических процессов свидетельствует о том, что первый закон термодинамики не указывает направление протекания термодинамического процесса. Действительно, самопроизвольный процесс передачи энергии от холодного тела горячему не противоречит первому закону термодинамики,
+            если только уменьшение внутренней энергии первого тела равно
+            энергии, полученной вторым телом. Однако в природе такой процесс не наблюдается. Основываясь на первом законе термодинамики, можно было бы попытаться построить периодически действующий двигатель, совершающий работу за счет непрерывного
+            охлаждения одного и того же источника теплоты, например за
+            счет внутренней энергии океанов. Однако такой процесс, хотя он
+            и удовлетворяет первому началу термодинамики, реализовать невозможно, что равноценно утверждению о невозможности построения вечного двигателя второго рода. Неоднократные попытки создания такого двигателя привели к открытию <span class="ChangedColor">второго начала
+            термодинамики</span>. Его содержание является обобщением огромного
+            экспериментального материала и описывает направление протекания процессов в термодинамической системе. Существует ряд эквивалентных формулировок второго начала термодинамики:
+        </p>
+        <p>
+            1. Невозможен процесс, единственным результатом которого
+            является передача энергии в форме теплоты от менее нагретого
+            тела более нагретому (формулировка Клаузиуса, 1850 г.).
+        </p>
+        <p>
+            2. Невозможен процесс, единственным результатом которого
+            является превращение всей теплоты, полученной от нагревателя, в
+            эквивалентную работу (формулировка <span class="TextToPic"  id="t3" onmousedown="toim3('Images/Kelvin.jpg')" onmouseout="totext3('Кельвина')"><span>Кельвина</span></span>, 1851 г.).
+        </p>
+        <p>
+            Второе начало термодинамики указывает на неравноценность
+            двух форм передачи энергии − работы и теплоты. Этот закон учитывает тот факт, что процесс перехода энергии упорядоченного
+            движения тела как целого (механической энергии) в энергию неупорядоченного движения его частиц (тепловую энергию) необратим. Например, механическая энергия при трении переходит в теплоту без каких-либо дополнительных (компенсирующих) процессов. Переход же энергии неупорядоченного движения частиц
+            (внутренней энергии) в работу возможен лишь при условии, что
+            он сопровождается каким-либо дополнительным процессом.
+        </p>
+        <p>
+            Рассмотрим квазистатический процесс, протекающий в идеальном газе. Запишем первое начало термодинамики в дифференциальной форме для этого процесса:
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL2.JPG" class="img-thumbnail"/>
+        </p>
+        </div>
+        <p>
+            Правая часть этого равенства не является полным дифференциалом, следовательно, количество теплоты Q не является функцией состояния. Разделив (24.2) на температуру T, получим
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL3.JPG" class="img-thumbnail" />
+        </p>
+        </div>
+        <p >
+            С помощью уравнения Клапейрона – Менделеева уравнение
+            (24.3) можно преобразовать к виду
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL4.JPG" class="img-thumbnail" />
+        </p>
+        </div>
+        <p>
+            Правая часть равенства (24.4) является полным дифференциалом. Следовательно, левая часть, которая называется <span class="ChangedColor">приведенным
+            количеством теплоты</span>, также является полным дифференциалом.
+            Функция состояния, полный дифференциал которой равен δQ / T,
+            называется <span class="ChangedColor">энтропией</span> и обозначается S:
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL5.JPG" class="img-thumbnail" />
+        </p>
+        </div>
+        <p>
+            В термодинамике понятие энтропии было введено <span class="TextToPic"  id="t2" onmousedown="toim2('Images/Clausius.jpg')" onmouseout="totext2('Р. Клаузиусом')"><span>Р. Клаузиусом</span></span> в 1865 г. <span class="ChangedColor">Энтропия</span> - это термодинамическая функция, характеризующая меру необратимой диссипации энергии в ней. Энтропия обладает следующими свойствами:
+        </p>
+        <p>
+            – энтропия − величина аддитивная: энтропия системы равна
+            сумме энтропии всех тел, входящих в эту систему;
+        </p>
+        <p>
+            – энтропия изолированной системы не уменьшается, она либо
+            возрастает, либо остается постоянной. Если в изолированной системе происходят обратимые процессы, то ее энтропия остается <span class="ChangedColor">неизменной</span>. Если в изолированной системе происходят необратимые
+            процессы, то ее энтропия <span class="ChangedColor">возрастает</span>.
+        </p>
+        <p>
+            Принцип возрастания энтропии замкнутых (изолированных)
+            систем представляет собой еще одну формулировку второго начала термодинамики. Величина возрастания энтропии в замкнутой
+            системе служит мерой направленности процессов, протекающих в
+            этой системе (возможны лишь такие процессы, которые ведут к
+            увеличению энтропии изолированной системы). Математически
+            это можно записать с помощью неравенства
+        </p>
+        <div>
+        <p style="text-align: center;" class="ChangedPictureDiv">
+            <img src="Images/FORMUL6.JPG" class="img-thumbnail" />
+        </p>
+        </div>
+        <p>
+            Чтобы определить изменение энтропии при квазистатическом
+            переходе термодинамической системы из одного равновесного состояния в другое, необходимо проинтегрировать выражение (24.5):
+        </p>
+         <div style="text-align: center"  >
+        <p class="ChangedPictureDiv">
+            <img src="Images/FORMUL7.JPG" class="img-thumbnail">
+        </p>
+         </div >
+        <p>
+            Рассмотрим процесс теплообмена между двумя телами: стаканом и цилиндром. Изменения энтропии стакана ΔSс и цилиндра
+            ΔSц в соответствии с формулой (24.7) равны
+        </p>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL8.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL9.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <p>
+            где Cст – теплоемкость стакана; Cц – теплоемкость цилиндра; t01 и
+            t02, t1 и t2 – температуры стакана и цилиндра в начальный и в некоторый момент времени соответственно.
+        </p>
+        <p>
+            Изменение энтропии системы стакан – цилиндр равно:
+        </p>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL10.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <p>
+            Для вычисления ΔS необходимо определить теплоемкости
+            стакана и цилиндра, их начальные и конечные температуры.
+        </p>
+        <p>
+            Для измерения теплоемкости Cст стакана сначала необходимо
+            нагреть стакан, при этом цилиндр должен быть вынут из стакана
+            во избежание нагрева. Затем цилиндр вставляют в нагретый стакан и закрывают теплоизолирующей крышкой. Между цилиндром
+            и стаканом будет происходить теплообмен, пока их температуры
+            не станут одинаковы.
+        </p>
+        <p>
+            При нагревании стакана количество теплоты Qнагр, которое
+            выделяет нагреватель, идет на нагревание стакана и частично рассеивается в воздухе. В начале процесса нагревания температура
+            стакана в течение некоторого промежутка времени Δτ растет по <span class="ChangedColor">линейному закону</span> (значения функции изменяются линейно в зависимости от значений аргумента). Пренебрегая потерями теплоты на этом интервале, можно записать:
+        </p>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL11.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <p>
+            где Qcт – количество теплоты, затраченное на нагревание стакана;
+            Δt – изменение температуры стакана при его нагревании за время Δτ. Интервал времени нагревания Δτ следует выбрать небольшим (2–3 мин).
+        </p>
+        <p>
+            Из выражения (24.11) можно получить формулу для определения теплоемкости Cст стакана:
+        </p>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL12.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <p> <span class="ChangedColor">Тепловой баланс</span> - это сопоставление прихода и расхода (полезно использованной и потерянной) теплоты в различных тепловых процессах.
+            При теплообмене стакан с цилиндром находится в  <span class="ChangedColor">термостате</span> (системе, обладающей столь большой теплоёмкостью, что подводимое к ней тепло не меняет её температуру.),
+            поэтому уравнение теплового баланса для этого процесса будет
+            иметь вид:
+        </p>
+        <div>
+            <p style="text-align: center;" class="ChangedPictureDiv">
+                <img src="Images/FORMUL13.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+        <p>
+            где Δt1 и Δt2 – изменения температуры стакана и цилиндра за один
+            и тот же промежуток времени от начала теплообмена (тепловые
+            потери на нагревания воздуха в термостате не учитываем). Отсюда
+            находим теплоемкость цилиндра:
+        </p>
+        <div>
+            <p style="text-align: center; padding-bottom: 1em" class="ChangedPictureDiv">
+                <img src="Images/FORMUL14.JPG" class="img-thumbnail" />
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    function toim(i_path){
+        document.getElementById("t1").innerHTML='<div class="TextToPic"><img style=" display: block; margin: 0 auto 0 auto;" src="'+i_path+'"/></div>'
+    }
+    function totext(text) {
+        document.getElementById("t1").innerHTML="<span>"+text+"</span>"
+    }
+    function toim2(i_path){
+        document.getElementById("t2").innerHTML='<div class="TextToPic"><img style=" display: block; margin: 0 auto 0 auto;" src="'+i_path+'"/></div>'
+    }
+    function totext2(text) {
+        document.getElementById("t2").innerHTML="<span>"+text+"</span>"
+    }
+    function toim3(i_path){
+        document.getElementById("t3").innerHTML='<div class="TextToPic"><img style=" display: block; margin: 0 auto 0 auto;" src="'+i_path+'"/></div>'
+    }
+    function totext3(text) {
+        document.getElementById("t3").innerHTML="<span>"+text+"</span>"
+    }
+</script>
+</body>
+</html>

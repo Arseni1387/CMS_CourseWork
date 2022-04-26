@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link  href="Styles/Main.css" rel="stylesheet" type="text/css" media="all">
+    <title>Структура установки</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>  <style>
+    A:Hover{ background-color: white; text-decoration: underline; color:  #111d43; }
+    A:Active { color: red; text-decoration: underline; }
+</style>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="Karta.js?1635151260773"></script>
+    <script>
+        var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+        function init() {
+            canvas = document.getElementById("canvas");
+            anim_container = document.getElementById("animation_container");
+            dom_overlay_container = document.getElementById("dom_overlay_container");
+            var comp=AdobeAn.getComposition("845C2B49D618A04C81D139BDB26011AA");
+            var lib=comp.getLibrary();
+            var loader = new createjs.LoadQueue(false);
+            loader.installPlugin(createjs.Sound);
+            loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+            loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+            var lib=comp.getLibrary();
+            loader.loadManifest(lib.properties.manifest);
+        }
+        function handleFileLoad(evt, comp) {
+            var images=comp.getImages();
+            if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
+        }
+        function handleComplete(evt,comp) {
+            //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+            var lib=comp.getLibrary();
+            var ss=comp.getSpriteSheet();
+            var queue = evt.target;
+            var ssMetadata = lib.ssMetadata;
+            for(i=0; i<ssMetadata.length; i++) {
+                ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+            }
+            exportRoot = new lib.Karta();
+            stage = new lib.Stage(canvas);
+            stage.enableMouseOver();
+            //Registers the "tick" event listener.
+            fnStartAnimation = function() {
+                stage.addChild(exportRoot);
+                createjs.Ticker.framerate = lib.properties.fps;
+                createjs.Ticker.addEventListener("tick", stage);
+                createjs.Ticker.addEventListener("tick", AdobeAn.handleSoundStreamOnTick);
+            }
+            //Code to support hidpi screens and responsive scaling.
+            AdobeAn.makeResponsive(false,'both',false,1,[canvas,anim_container,dom_overlay_container]);
+            AdobeAn.compositionLoaded(lib.properties.id);
+            fnStartAnimation();
+        }
+        function playSound(id, loop, offset) {
+            return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
+    </script>
+    <!-- write your code here -->
+
+
+</head>
+<body  onload="init();" style="margin:0px;">
+<div class="opacity2">
+    <header class="container-fluid head_menu p-3" style="background:#111d43 ">
+        <div class="container ">
+            <div class="d-flex flex-wrap justify-content-center">
+                <ul class="nav col-12 me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="menu.html" class="nav-link menu_text" style="border: 2px solid #111d43">Теоретические сведения</a></li>
+                    <li><a href="ustanovka_structure.html" class="nav-link menu_text " style="border: 2px solid blue">Структура установки</a></li>
+                    <li><a href="index.html" class="nav-link menu_text" style="border: 2px solid #111d43">Симулятор установки</a></li>
+                    <li><a href="tit.html" class="nav-link menu_text" style="border: 2px solid #111d43">Титульная страница</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div class="container TheoryText" style="display:flex; justify-content:center; margin-top: 6px" >
+        <p  style="font-family: Arial; font-size: 24pt; color: rgb(75, 73, 72); font-weight: bold">Структура установки</p>
+    </div>
+<div class="container" style="display:flex; justify-content:center; margin-top: 5px">
+<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1600px; height:1200px">
+    <canvas id="canvas" width="1600" height="1200" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+    <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1600px; height:1200px; position: absolute; left: 0px; top: 0px; display: block;">
+    </div>
+</div>
+
+</div >
+    <div class="container TheoryText" style="margin-top: 25px">
+        <p>
+            1. Рабочий блок <br>
+            2. Блок управления<br>
+            3. Теплоизолирующая крышка<br>
+            4. Стакан с алюминиевым цилиндром<br>
+            5. Стакан с латунным цилиндром<br>
+            6. Экран<br>
+            7. Клавиатура управления<br>
+        </p>
+    </div>
+    <div class="container TheoryText" style="margin-bottom: 10px" >
+    <div class="container" style="margin-top: 25px">
+        <p  style="font-family: Arial; font-size: 24pt; color: rgb(75, 73, 72); font-weight: bold">Порядок выполнения</p>
+        <p> 1) Включите блок управления (выключатель расположен задней панели блока управления). Подождите, пока в верхней части экрана
+            появится строка состояния и в правом верхнем углу высветится
+            надпись «Ready».
+        </p>
+        <p> 2) Кнопками «Т» и «Р» установите максимальную температуру нагревателя и его мощность согласно таблице вариантов, приведенной в приложение </p>
+        <p>
+            3) Снимите теплоизолирующую крышку (3)  и достаньте из стакана, выбранного согласно таблице вариантов, цилиндр. Нажмите кнопку «Старт».
+        </p>
+        <p>
+            4) Запишите в таблицу значения напряжения U, силы тока I и
+            мощности Р.
+        </p>
+        <p>
+           5) После окончания процесса нагревания последует звуковой
+            сигнал. Сразу после звукового сигнала вставьте цилиндр в стакан и закройте теплоизолирующую крышку.
+        </p>
+        <p>
+           6) При достижении теплового равновесия (температура стакана и цилиндра станут одинаковыми) остановите процесс измерения, нажав кнопку «Сброс». После окончания измерений выведите график нагрева, нажав кнопку «График нагрева». Передвигая
+            курсор кнопками «1» и «10», по начальному участку графика определите изменение температуры Δt стакана при его нагревании и
+            интервал времени нагревания Δτ. Данные запишите в таблицу.
+        </p>
+        <p>
+            7) Выведите на экран график охлаждения, нажав кнопку
+            «График охлаждения». Передвигая курсор кнопками «1» и «10»,
+            определите и запишите в таблицу значения температур стакана t1i
+            и цилиндра t2i через каждые 30 с.
+        </p>
+        <p>
+            8) Выключите блок управления (выключатель расположен задней панели блока управления).
+        </p>
+    </div>
+    <div class="box_button">
+        <button class="stop button" style="background:#111d43;color:white">Пауза</button>
+        <button class="play button" style="background:#111d43;color:white">Запустить</button>
+        <button class="atFirst button " style="background:#111d43;color:white">Сначала</button>
+
+        <script>
+            $('.stop').click(function(){
+                $('video').trigger('ended')[0].pause();
+            });
+            $('.play').click(function(){
+                $('video').trigger('ended')[0].play();
+            });
+            $('.atFirst').click(function(){
+                $('video').trigger('ended')[0].load();
+            });
+        </script>
+    </div>
+    </div>
+<div class="container" style="margin-top: 25px; display:flex; justify-content:center">
+    <div class="video">
+        <video width="90%" >
+            <source src="animatsiya(zvuk).mp4" type="video/mp4"  >
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+</div>
+</body>
+</html>
